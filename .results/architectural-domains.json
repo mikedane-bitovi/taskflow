@@ -1,0 +1,105 @@
+{
+  "ui": {
+    "required_patterns": {
+      "component-composition": "All UI components follow a composition pattern using Radix UI primitives with React.forwardRef",
+      "styling-system": "Use Tailwind CSS utility classes with cn() utility for conditional class application",
+      "component-structure": "Components are organized into business logic components (/components) and reusable UI primitives (/components/ui)",
+      "icon-system": "Use Lucide React icons consistently across the application"
+    },
+    "architectural_constraints": {
+      "radix-primitives": "All interactive UI components must be built on top of Radix UI primitives for accessibility",
+      "tailwind-only": "No custom CSS files - all styling must use Tailwind utility classes",
+      "design-tokens": "Use predefined color system (primary, secondary, destructive, muted-foreground, etc.)",
+      "responsive-design": "All components must be responsive using Tailwind's responsive utilities"
+    }
+  },
+  "routing": {
+    "required_patterns": {
+      "app-router": "Use Next.js App Router with file-based routing in /app directory",
+      "route-groups": "Protected routes are organized under (dashboard) route group",
+      "layout-hierarchy": "Nested layouts for authentication and dashboard structure",
+      "server-components": "Pages are Server Components by default, use 'use client' directive only when needed"
+    },
+    "architectural_constraints": {
+      "authentication-guard": "All dashboard routes require authentication check in layout.tsx",
+      "redirect-pattern": "Use Next.js redirect() for authentication flow",
+      "nested-layouts": "Dashboard layout includes sidebar and authentication logic"
+    }
+  },
+  "data-layer": {
+    "required_patterns": {
+      "prisma-orm": "All database operations must use Prisma Client",
+      "server-actions": "Use Next.js Server Actions for data mutations",
+      "type-safety": "Use generated Prisma types for all database operations",
+      "transaction-safety": "Database operations include proper error handling"
+    },
+    "architectural_constraints": {
+      "sqlite-database": "Database is SQLite with Prisma as the only data access layer",
+      "schema-migrations": "All schema changes must go through Prisma migrations",
+      "generated-client": "Prisma client is generated to /app/generated/prisma",
+      "server-only": "Database operations can only occur in server actions or server components"
+    }
+  },
+  "authentication": {
+    "required_patterns": {
+      "session-based": "Use custom session-based authentication with tokens stored in cookies",
+      "password-hashing": "Passwords are hashed using bcryptjs",
+      "server-actions": "Authentication logic is handled through server actions",
+      "user-context": "Current user is fetched through getCurrentUser() server action"
+    },
+    "architectural_constraints": {
+      "cookie-sessions": "Session tokens are stored in HTTP-only cookies",
+      "no-jwt": "No JWT tokens - uses simple session tokens with database lookup",
+      "server-side-auth": "All authentication checks happen on the server side"
+    }
+  },
+  "state-management": {
+    "required_patterns": {
+      "react-hooks": "Use React hooks (useState, useEffect, useOptimistic, useTransition) for client state",
+      "server-state": "Server state is managed through Server Actions and revalidatePath",
+      "optimistic-updates": "Use useOptimistic for immediate UI feedback on mutations",
+      "form-state": "Form handling uses Server Actions with FormData"
+    },
+    "architectural_constraints": {
+      "no-global-state": "No global state management library (Redux, Zustand, etc.)",
+      "server-first": "State management follows server-first approach",
+      "form-actions": "All form submissions use Server Actions pattern"
+    }
+  },
+  "design-system": {
+    "required_patterns": {
+      "component-variants": "UI components use class-variance-authority for variant management",
+      "consistent-spacing": "Use Tailwind spacing scale consistently",
+      "typography-system": "Font system managed through lib/fonts.ts with Poppins as custom font",
+      "color-system": "Semantic color naming (primary, secondary, destructive, muted-foreground)"
+    },
+    "architectural_constraints": {
+      "radix-foundation": "Design system is built on Radix UI accessibility foundation",
+      "tailwind-variables": "Colors and spacing use CSS custom properties through Tailwind",
+      "no-css-modules": "No CSS modules or styled-components - utility-first approach only"
+    }
+  },
+  "data-visualization": {
+    "required_patterns": {
+      "recharts-library": "All charts must use Recharts library",
+      "responsive-charts": "Charts use ResponsiveContainer for responsive behavior",
+      "consistent-styling": "Chart colors follow design system color palette",
+      "tooltip-styling": "Custom tooltip styling matches application theme"
+    },
+    "architectural_constraints": {
+      "recharts-only": "No other charting libraries - Recharts is the single source for data visualization",
+      "data-transformation": "Chart data must be transformed to match Recharts expected formats"
+    }
+  },
+  "drag-and-drop": {
+    "required_patterns": {
+      "hello-pangea-dnd": "Use @hello-pangea/dnd for all drag and drop functionality",
+      "optimistic-updates": "Drag operations use optimistic updates with server sync",
+      "kanban-structure": "Drag and drop follows kanban board pattern with columns and tasks"
+    },
+    "architectural_constraints": {
+      "single-dnd-library": "Only use @hello-pangea/dnd - no other drag and drop libraries",
+      "server-sync": "All drag operations must sync to server via Server Actions"
+    }
+  }
+}
