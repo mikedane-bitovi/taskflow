@@ -1,36 +1,138 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# TaskFlow — AI Feature Generation Demo
 
-## Getting Started
+A modern task management app built with Next.js 14, React, TypeScript, and Prisma. TaskFlow provides a comprehensive solution for managing tasks, and projects with an intuitive drag-and-drop Kanban board interface.
 
-First, run the development server:
+This repository is intentionally structured as a demo and sandbox for Bitovi's AI workflows:
+- Understanding a codebase and generating copilot instructions
+- Automatically implementing features from a Jira ticket
 
+Reference materials:
+- Instruction generation workflow: https://github.com/bitovi/ai-enablement-prompts/tree/main/understanding-code/instruction-generation
+- Feature generation workflow: https://github.com/bitovi/ai-enablement-prompts/tree/main/writing-code/generate-feature
+- Example Jira ticket used in this repo: https://bitovi-training.atlassian.net/browse/USER-13
+
+## What you’ll do in this demo
+
+- Run the app locally with seeded sample data
+- Explore the baseline experience on the `main` branch
+- Review the AI-completed feature for USER-13 on the `user-13-search-and-filter` branch
+- Compare branches and see exactly what the AI changed
+- Optionally, follow the Bitovi workflows to reproduce the feature implementation with your own AI agent
+
+## Tech overview
+
+- Next.js 14 App Router, React, TypeScript
+- Prisma ORM with SQLite for local development
+- shadcn/ui + Radix + Tailwind for UI
+- Feature-based structure with server actions and typed components
+
+## Installation
+
+1. Clone the repository
+   ```bash
+   git clone https://github.com/mikedane-bitovi/taskflow
+   cd taskflow
+   npm install
+   ```
+
+2. Set up the database
+   ```bash
+   # Create, migrate and populate the database
+   npm run db:setup
+   ```
+   This will create sample users and tasks for testing. Default login credentials:
+   - Email: `alice@example.com`
+   - Password: `password123`
+
+3. Start the development server
+   ```bash
+   npm run dev
+   ```
+   Then open http://localhost:3000
+
+## Branches used in this demo
+
+- main
+  - Baseline application used as the starting point for AI feature work
+  - Visit /tasks to see the tasks page before the feature is implemented
+
+- user-13-search-and-filter
+  - Contains the implementation of Jira ticket USER-13
+  - Adds a searchable task bar and filter controls to the /tasks page
+  - Follows the project’s patterns (server actions, Prisma, shadcn/ui, accessibility)
+
+Common Git operations for exploring the demo:
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+# Fetch all branches
+git fetch --all
+
+# Switch between the baseline and AI-implemented feature
+git switch main
+git switch user-13-search-and-filter
+
+# See what changed between branches
+git diff main...user-13-search-and-filter
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## The AI-implemented feature (USER-13)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Ticket: https://bitovi-training.atlassian.net/browse/USER-13
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Feature summary:
+- Adds a searchable input and filters on the /tasks page
+- Lets users quickly find tasks by text, priority, and status
 
-## Learn More
+How to try it:
+1. Start the app (see Installation above)
+2. Log in with the seeded account or create your own 
+   - (alice@example.com / password123)
+3. On `main`, navigate to /tasks and note the baseline behavior
+4. Switch to `user-13-search-and-filter` and refresh /tasks
+5. Try searching by task title/description and filtering by priority/status
 
-To learn more about Next.js, take a look at the following resources:
+## Tutorial: Running the AI workflows yourself
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+If you want to recreate the experience with your own AI agent, follow the Bitovi guides:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1) Instruction generation
+- Goal: produce a codebase-specific instruction file the AI will follow when writing code
+- Guide: https://github.com/bitovi/ai-enablement-prompts/tree/main/understanding-code/instruction-generation
 
-## Deploy on Vercel
+2) Feature generation
+- Goal: point your AI at a Jira ticket (e.g., USER-13) and have it implement the feature
+- Guide: https://github.com/bitovi/ai-enablement-prompts/tree/main/writing-code/generate-feature
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Suggested flow:
+- Start on `main`
+- Provide your agent with the instruction generation prompt to build a coding conventions file
+- Provide your agent with the feature generation prompt and the USER-13 ticket
+- Let the agent create a feature branch and implement the change
+- Compare your branch to `user-13-search-and-filter` to see how close you match
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Database management
+
+Available scripts:
+- `npm run db:seed` — Populate the database with sample data
+- `npm run db:clear` — Clear all data from the database
+- `npm run db:reset` — Clear and re-seed the database
+
+The seed script creates:
+- 7 sample users with different roles and profiles
+- 30+ sample tasks with various priorities, statuses, and assignments
+- Realistic task data including descriptions, due dates, and assignments
+
+Local development database:
+- Uses SQLite via Prisma (see `prisma/schema.prisma`)
+- Seeded data is safe to reset at any time using the scripts above
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Follow the established code patterns
+4. Test your changes thoroughly
+5. Submit a pull request
+
+## License
+
+This project is licensed under the MIT License.
