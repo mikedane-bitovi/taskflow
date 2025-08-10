@@ -101,7 +101,7 @@ export default function AnalyticsPage() {
     const completionRate = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
 
     return (
-        <div className="max-w-7xl mx-auto p-8 space-y-8">
+        <div className="max-w-7xl p-8 space-y-8">
             <h1 className={`text-3xl font-bold mb-6 ${poppins.className}`}>Analytics</h1>
 
             {/* Summary Cards */}
