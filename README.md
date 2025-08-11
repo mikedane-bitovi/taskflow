@@ -10,6 +10,7 @@ Reference materials:
 - [Instruction generation](https://github.com/bitovi/ai-enablement-prompts/tree/main/understanding-code/instruction-generation) workflow
 - [Feature generation](https://github.com/bitovi/ai-enablement-prompts/tree/main/writing-code/generate-feature) workflow
 - Example [Jira ticket](https://bitovi-training.atlassian.net/browse/USER-13) used in this repo
+- [Figma Designs](https://www.figma.com/design/TvHxpQ3z4Zq5JWOVUkgLlU/Tasks-Search-and-Filter?m=auto&t=q9FiK621lvm8IGt9-1)
 
 ## What you’ll do in this demo
 
