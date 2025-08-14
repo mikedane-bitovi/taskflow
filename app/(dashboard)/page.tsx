@@ -6,26 +6,33 @@ import { TaskOverview } from "@/components/task-overview";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 import { getAllTasks } from "@/app/(dashboard)/tasks/actions";
 import { useEffect, useState } from "react";
+import { Prisma } from "@/app/generated/prisma";
 
 import { poppins } from "@/lib/fonts";
 // import { DashboardCharts } from "../../components/dashboard-charts";
 // import { TaskOverview } from "../../components/task-overview";
 
-// Updated Task interface to match the expected structure
-interface Task {
-  id: number;
-  name: string;
-  description: string;
-  priority: string;
-  status: string;
-  dueDate: Date | null;
-  assigneeId: number | null;
-  creatorId: number;
-  createdAt: Date;
-  updatedAt: Date;
-  assignee: { id: number; name: string; email: string } | null;
-  creator: { id: number; name: string; email: string };
-}
+// Use the Task type from Prisma
+type Task = Prisma.TaskGetPayload<{
+  include: {
+    assignee: {
+      select: {
+        id: true;
+        name: true;
+        email: true;
+        password: true;
+      };
+    };
+    creator: {
+      select: {
+        id: true;
+        name: true;
+        email: true;
+        password: true;
+      };
+    };
+  };
+}>;
 
 export default function IndexPage() {
   const [allTasks, setAllTasks] = useState<Task[]>([]);
@@ -139,7 +146,7 @@ export default function IndexPage() {
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Open Tasks</CardTitle>
+            <CardTitle className="text-sm font-medium">Active Tasks</CardTitle>
             <Clock className="h-4 w-4 text-foreground-muted" />
           </CardHeader>
           <CardContent>
