@@ -7,9 +7,10 @@ This repository is intentionally structured as a demo and sandbox for Bitovi's A
 - Automatically implementing features from a Jira ticket
 
 Reference materials:
-- Instruction generation workflow: https://github.com/bitovi/ai-enablement-prompts/tree/main/understanding-code/instruction-generation
-- Feature generation workflow: https://github.com/bitovi/ai-enablement-prompts/tree/main/writing-code/generate-feature
-- Example Jira ticket used in this repo: https://bitovi-training.atlassian.net/browse/USER-13
+- [Instruction generation](https://github.com/bitovi/ai-enablement-prompts/tree/main/understanding-code/instruction-generation) workflow
+- [Feature generation](https://github.com/bitovi/ai-enablement-prompts/tree/main/writing-code/generate-feature) workflow 
+- Example [Jira ticket](https://bitovi-training.atlassian.net/browse/USER-13) used in this repo
+- [Figma designs](https://www.figma.com/design/TvHxpQ3z4Zq5JWOVUkgLlU/Tasks-Search-and-Filter?m=auto&t=ehht6F82l82y3XIW-6)
 
 ## What you’ll do in this demo
 
