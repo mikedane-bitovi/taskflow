@@ -7,10 +7,9 @@ This repository is intentionally structured as a demo and sandbox for Bitovi's A
 - Automatically implementing features from a Jira ticket
 
 Reference materials:
-- [Instruction generation](https://github.com/bitovi/ai-enablement-prompts/tree/main/understanding-code/instruction-generation) workflow
-- [Feature generation](https://github.com/bitovi/ai-enablement-prompts/tree/main/writing-code/generate-feature) workflow
-- Example [Jira ticket](https://bitovi-training.atlassian.net/browse/USER-13) used in this repo
-- [Figma Designs](https://www.figma.com/design/TvHxpQ3z4Zq5JWOVUkgLlU/Tasks-Search-and-Filter?m=auto&t=q9FiK621lvm8IGt9-1)
+- Instruction generation workflow: https://github.com/bitovi/ai-enablement-prompts/tree/main/understanding-code/instruction-generation
+- Feature generation workflow: https://github.com/bitovi/ai-enablement-prompts/tree/main/writing-code/generate-feature
+- Example Jira ticket used in this repo: https://bitovi-training.atlassian.net/browse/USER-13
 
 ## What you’ll do in this demo
 
@@ -38,9 +37,9 @@ Reference materials:
 
 2. Set up the database
    ```bash
-   # Create and migrate the database
-   npx prisma db push
-   npm run db:seed
+   # Create, migrate and populate the database
+   npm run db:setup
+
    ```
    This will create sample users and tasks for testing. Default login credentials:
    - Email: `alice@example.com`
