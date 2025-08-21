@@ -1,6 +1,8 @@
 name: PR Lint Check and Jira Integration
 
-on: pull_request
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, edited]
 jobs:
   lint:
     runs-on: ubuntu-latest
@@ -47,11 +49,7 @@ jobs:
         env:
           JIRA_BASE_URL: ${{ secrets.JIRA_BASE_URL }}
           JIRA_EMAIL: ${{ secrets.JIRA_EMAIL }}
-<<<<<<< Updated upstream
-          JIRA_API_TOKEN: Bearer ${{ secrets.JIRA_API_TOKEN }}
-=======
           JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
->>>>>>> Stashed changes
         run: |
           jira_ticket="${{ steps.extract-ticket.outputs.jira_ticket }}"
 
@@ -63,11 +61,7 @@ jobs:
           echo "Looking up Jira ticket: $jira_ticket"
 
           # Make API request to Jira to get ticket details
-<<<<<<< Updated upstream
-          response=$(curl -s -w "\n%{http_code}" \
-=======
           response=$(curl -s -w "\n%{http_code}" -X GET \
->>>>>>> Stashed changes
             -u "$JIRA_EMAIL:$JIRA_API_TOKEN" \
             -H "Accept: application/json" \
             "$JIRA_BASE_URL/rest/api/3/issue/$jira_ticket")
