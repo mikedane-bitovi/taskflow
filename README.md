@@ -29,7 +29,7 @@ Reference materials:
 
 ## Installation
 
-Taskflow requires Node.JS version 24
+Taskflow requires Node.JS version 18 or greater
 
 1. Clone the repository
    ```bash
