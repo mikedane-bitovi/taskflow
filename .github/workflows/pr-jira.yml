@@ -1,6 +1,6 @@
 name: PR Lint Check and Jira Integration
 
-on: [pull_request, push]
+on: [pull_request]
 
 jobs:
   lint:
