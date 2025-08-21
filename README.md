@@ -2,11 +2,13 @@
 
 A modern task management app built with Next.js 14, React, TypeScript, and Prisma. TaskFlow provides a comprehensive solution for managing tasks, and projects with an intuitive drag-and-drop Kanban board interface.
 
-This repository is intentionally structured as a demo and sandbox for Bitovi's AI workflows:
+This repo is intentionally structured as a demo and sandbox for Bitovi's AI workflows:
+
 - Understanding a codebase and generating copilot instructions
 - Automatically implementing features from a Jira ticket
 
 Reference materials:
+
 - Instruction generation workflow: https://github.com/bitovi/ai-enablement-prompts/tree/main/understanding-code/instruction-generation
 - Feature generation workflow: https://github.com/bitovi/ai-enablement-prompts/tree/main/writing-code/generate-feature
 - Example Jira ticket used in this repo: https://bitovi-training.atlassian.net/browse/USER-13
@@ -29,6 +31,7 @@ Reference materials:
 ## Installation
 
 1. Clone the repository
+
    ```bash
    git clone https://github.com/mikedane-bitovi/taskflow
    cd taskflow
@@ -36,11 +39,14 @@ Reference materials:
    ```
 
 2. Set up the database
+
    ```bash
    # Create, migrate and populate the database
    npm run db:setup
    ```
+
    This will create sample users and tasks for testing. Default login credentials:
+
    - Email: `alice@example.com`
    - Password: `password123`
 
@@ -53,6 +59,7 @@ Reference materials:
 ## Branches used in this demo
 
 - main
+
   - Baseline application used as the starting point for AI feature work
   - Visit /tasks to see the tasks page before the feature is implemented
 
@@ -62,6 +69,7 @@ Reference materials:
   - Follows the project’s patterns (server actions, Prisma, shadcn/ui, accessibility)
 
 Common Git operations for exploring the demo:
+
 ```bash
 # Fetch all branches
 git fetch --all
@@ -79,12 +87,14 @@ git diff main...user-13-search-and-filter
 Ticket: https://bitovi-training.atlassian.net/browse/USER-13
 
 Feature summary:
+
 - Adds a searchable input and filters on the /tasks page
 - Lets users quickly find tasks by text, priority, and status
 
 How to try it:
+
 1. Start the app (see Installation above)
-2. Log in with the seeded account or create your own 
+2. Log in with the seeded account or create your own
    - (alice@example.com / password123)
 3. On `main`, navigate to /tasks and note the baseline behavior
 4. Switch to `user-13-search-and-filter` and refresh /tasks
@@ -94,15 +104,18 @@ How to try it:
 
 If you want to recreate the experience with your own AI agent, follow the Bitovi guides:
 
-1) Instruction generation
+1. Instruction generation
+
 - Goal: produce a codebase-specific instruction file the AI will follow when writing code
 - Guide: https://github.com/bitovi/ai-enablement-prompts/tree/main/understanding-code/instruction-generation
 
-2) Feature generation
+2. Feature generation
+
 - Goal: point your AI at a Jira ticket (e.g., USER-13) and have it implement the feature
 - Guide: https://github.com/bitovi/ai-enablement-prompts/tree/main/writing-code/generate-feature
 
 Suggested flow:
+
 - Start on `main`
 - Provide your agent with the instruction generation prompt to build a coding conventions file
 - Provide your agent with the feature generation prompt and the USER-13 ticket
@@ -112,16 +125,19 @@ Suggested flow:
 ## Database management
 
 Available scripts:
+
 - `npm run db:seed` — Populate the database with sample data
 - `npm run db:clear` — Clear all data from the database
 - `npm run db:reset` — Clear and re-seed the database
 
 The seed script creates:
+
 - 7 sample users with different roles and profiles
 - 30+ sample tasks with various priorities, statuses, and assignments
 - Realistic task data including descriptions, due dates, and assignments
 
 Local development database:
+
 - Uses SQLite via Prisma (see `prisma/schema.prisma`)
 - Seeded data is safe to reset at any time using the scripts above
 
