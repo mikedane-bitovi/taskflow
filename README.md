@@ -29,6 +29,8 @@ Reference materials:
 
 ## Installation
 
+Taskflow requires Node.JS version 24
+
 1. Clone the repository
    ```bash
    git clone https://github.com/bitovi/taskflow
