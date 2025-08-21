@@ -31,7 +31,7 @@ Reference materials:
 
 1. Clone the repository
    ```bash
-   git clone https://github.com/mikedane-bitovi/taskflow
+   git clone https://github.com/bitovi/taskflow
    cd taskflow
    npm install
    ```
