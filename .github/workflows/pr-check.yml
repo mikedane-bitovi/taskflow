@@ -1,0 +1,120 @@
+name: PR Lint Check and Jira Integration
+
+on: pull_request
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run lint check
+        id: lint
+        run: npm run lint
+  jira:
+    runs-on: ubuntu-latest
+    needs: lint
+    steps:
+      - name: Extract Jira ticket from branch name
+        id: extract-ticket
+        run: |
+          branch_name="${{ github.head_ref }}"
+          echo "Branch name: $branch_name"
+
+          # Extract Jira ticket pattern (e.g., PROJ-123, ABC-456)
+          # This regex matches common Jira ticket patterns
+          jira_ticket=$(echo "$branch_name" | grep -oE '[A-Z]+-[0-9]+' | head -1 || echo "")
+
+          if [ -n "$jira_ticket" ]; then
+            echo "Found Jira ticket: $jira_ticket"
+            echo "jira_ticket=$jira_ticket" >> $GITHUB_OUTPUT
+          else
+            echo "No Jira ticket found in branch name"
+            echo "jira_ticket=" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Lookup Jira ticket
+        if: steps.extract-ticket.outputs.jira_ticket != ''
+        env:
+          JIRA_BASE_URL: ${{ secrets.JIRA_BASE_URL }}
+          JIRA_EMAIL: ${{ secrets.JIRA_EMAIL }}
+          JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
+        run: |
+          jira_ticket="${{ steps.extract-ticket.outputs.jira_ticket }}"
+
+          if [ -z "$JIRA_BASE_URL" ] || [ -z "$JIRA_EMAIL" ] || [ -z "$JIRA_API_TOKEN" ]; then
+            echo "⚠️ Jira credentials not configured. Please set JIRA_BASE_URL, JIRA_EMAIL, and JIRA_API_TOKEN secrets."
+            exit 0
+          fi
+
+          echo "Looking up Jira ticket: $jira_ticket"
+
+          # Make API request to Jira to get ticket details
+          response=$(curl -s -w "\n%{http_code}" \
+            -u "$JIRA_EMAIL:$JIRA_API_TOKEN" \
+            -H "Accept: application/json" \
+            "$JIRA_BASE_URL/rest/api/3/issue/$jira_ticket")
+
+          # Extract HTTP status code
+          http_code=$(echo "$response" | tail -n1)
+          response_body=$(echo "$response" | head -n -1)
+
+          if [ "$http_code" = "200" ]; then
+            echo "✅ Successfully found Jira ticket: $jira_ticket"
+            echo "Ticket details:"
+            echo "$response_body" | jq -r '.fields.summary // "No summary available"'
+            echo "Status: $(echo "$response_body" | jq -r '.fields.status.name // "Unknown"')"
+            echo "Assignee: $(echo "$response_body" | jq -r '.fields.assignee.displayName // "Unassigned"')"
+          elif [ "$http_code" = "404" ]; then
+            echo "❌ Jira ticket $jira_ticket not found"
+            exit 1
+          else
+            echo "❌ Failed to lookup Jira ticket. HTTP status: $http_code"
+            echo "Response: $response_body"
+            exit 1
+          fi
+
+      - name: Comment on PR with Jira info
+        if: success() && steps.extract-ticket.outputs.jira_ticket != ''
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const jiraTicket = '${{ steps.extract-ticket.outputs.jira_ticket }}';
+            const jiraBaseUrl = '${{ secrets.JIRA_BASE_URL }}';
+
+            const comment = `🎫 **Jira Ticket Found:** [${jiraTicket}](${jiraBaseUrl}/browse/${jiraTicket})
+
+            ✅ Lint check passed
+            ✅ Jira ticket lookup successful`;
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });
+
+      - name: Comment on PR if no Jira ticket found
+        if: success() && steps.extract-ticket.outputs.jira_ticket == ''
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const comment = `✅ **Lint check passed**
+
+            ⚠️ No Jira ticket found in branch name. Please ensure your branch follows the pattern: \`PROJ-123-feature-description\``;
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });
