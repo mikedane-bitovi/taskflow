@@ -1,8 +1,7 @@
 name: PR Lint Check and Jira Integration
 
-on:
-  pull_request:
-    types: [opened, synchronize, reopened, edited]
+on: [pull_request, push]
+
 jobs:
   lint:
     runs-on: ubuntu-latest
