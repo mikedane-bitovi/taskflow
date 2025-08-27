@@ -60,7 +60,7 @@ Taskflow requires Node.JS version 18 or greater
   - Visit /tasks to see the tasks page before the feature is implemented
 
 - user-13-search-and-filter
-  - Contains the implementation of Jira ticket USER-13
+  - Contains the implementation of Jira ticket PLAY-23
   - Adds a searchable task bar and filter controls to the /tasks page
   - Follows the project’s patterns (server actions, Prisma, shadcn/ui, accessibility)
 
