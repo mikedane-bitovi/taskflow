@@ -1,10 +1,10 @@
 "use client"
 
-import { useOptimistic, useTransition, useState, useEffect } from "react"
+import { useOptimistic, useTransition, useState } from "react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Checkbox } from "@/components/ui/checkbox"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
@@ -20,7 +20,8 @@ type TaskWithProfile = PrismaTask & {
   assignee?: Pick<User, "name"> | null;
 };
 
-export function TaskList({ initialTasks }: { initialTasks: TaskWithProfile[]; }) {
+export function TaskList({ initialTasks, loading }: { initialTasks: TaskWithProfile[]; loading?: boolean }) {
+  // Update optimistic tasks whenever initialTasks changes (for search results)
   const [optimisticTasks, setOptimisticTasks] = useOptimistic(
     initialTasks,
     (state, { action, task }: { action: "delete" | "toggle"; task: TaskWithProfile | { id: number } }) => {
@@ -33,6 +34,7 @@ export function TaskList({ initialTasks }: { initialTasks: TaskWithProfile[]; })
       return state
     },
   )
+  
   const [isPending, startTransition] = useTransition()
   const [openDialogs, setOpenDialogs] = useState<Record<number, boolean>>({})
   const [openDropdowns, setOpenDropdowns] = useState<Record<number, boolean>>({})
@@ -67,6 +69,26 @@ export function TaskList({ initialTasks }: { initialTasks: TaskWithProfile[]; })
       .map((n) => n[0])
       .join("")
       .toUpperCase()
+  }
+
+  if (loading) {
+    return (
+      <div className="space-y-4">
+        <div className="text-center text-muted-foreground py-8">
+          Loading tasks...
+        </div>
+      </div>
+    )
+  }
+
+  if (optimisticTasks.length === 0) {
+    return (
+      <div className="space-y-4">
+        <div className="text-center text-muted-foreground py-8">
+          No tasks found.
+        </div>
+      </div>
+    )
   }
 
   return (
