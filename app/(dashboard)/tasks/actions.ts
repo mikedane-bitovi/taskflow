@@ -42,9 +42,39 @@ export async function createTask(formData: FormData) {
 }
 
 // Get all tasks with assignee and creator info
-export async function getAllTasks() {
+export async function getAllTasks(searchQuery?: string, priority?: string, status?: string) {
     try {
+        // Build the where clause for filtering
+        const where: Record<string, any> = {};
+        
+        // Search filter - search in name and description
+        if (searchQuery && searchQuery.trim()) {
+            where.OR = [
+                {
+                    name: {
+                        contains: searchQuery.trim()
+                    }
+                },
+                {
+                    description: {
+                        contains: searchQuery.trim()
+                    }
+                }
+            ];
+        }
+        
+        // Priority filter
+        if (priority && priority !== 'all') {
+            where.priority = priority;
+        }
+        
+        // Status filter
+        if (status && status !== 'all') {
+            where.status = status;
+        }
+
         const tasks = await prisma.task.findMany({
+            where,
             include: {
                 assignee: { select: { id: true, name: true, email: true, password: true } },
                 creator: { select: { id: true, name: true, email: true, password: true } },
